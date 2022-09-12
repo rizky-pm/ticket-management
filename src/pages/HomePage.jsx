@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
 import headerData from '../components/Table/headerData';
 import TableComponent from '../components/Table';
 import PaginationComponent from '../components/PaginationComponent';
+import SelectComponent from '../components/SelectComponent';
+import InputSearchComponent from '../components/InputSearchComponent';
+import { Container, Heading4 } from '../components/Styled';
+
 import { filterData, getTableLength, paginate } from '../utils';
 import { getTickets } from '../api/tickets';
-import SelectComponent from '../components/SelectComponent';
 import { FILTER_STATUS, MENU_DATA } from '../constants';
-import InputSearchComponent from '../components/InputSearchComponent';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  background-color: white;
-  padding: 20px;
-`;
 
 const MenuContainer = styled.div`
   display: flex;
@@ -23,7 +19,7 @@ const MenuContainer = styled.div`
   gap: 10px;
 `;
 
-const MenuItem = styled.div`
+const MenuItem = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,11 +41,6 @@ const MenuItem = styled.div`
 
 const TableContainer = styled.div`
   overflow-x: auto;
-`;
-
-const Heading4 = styled.h3`
-  font-size: 20px;
-  font-weight: 600;
 `;
 
 const HomePage = () => {
@@ -79,138 +70,12 @@ const HomePage = () => {
           <MenuContainer>
             {MENU_DATA.map((menu) => {
               return (
-                <MenuItem key={menu.value}>
+                <MenuItem to={menu.value} key={menu.value}>
                   <p>{menu.label}</p>
                 </MenuItem>
               );
             })}
           </MenuContainer>
-          {/* <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '10px',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div
-              style={{
-                backgroundColor: 'red',
-                borderRadius: '4px',
-                width: '100px',
-                aspectRatio: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <span>Users</span>
-            </div>
-            <div
-              style={{
-                backgroundColor: 'red',
-                borderRadius: '4px',
-                width: '100px',
-                aspectRatio: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <span>Users</span>
-            </div>
-            <div
-              style={{
-                backgroundColor: 'red',
-                borderRadius: '4px',
-                width: '100px',
-                aspectRatio: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <span>Users</span>
-            </div>
-            <div
-              style={{
-                backgroundColor: 'red',
-                borderRadius: '4px',
-                width: '100px',
-                aspectRatio: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <span>Users</span>
-            </div>
-            <div
-              style={{
-                backgroundColor: 'red',
-                borderRadius: '4px',
-                width: '100px',
-                aspectRatio: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <span>Users</span>
-            </div>
-            <div
-              style={{
-                backgroundColor: 'red',
-                borderRadius: '4px',
-                width: '100px',
-                aspectRatio: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <span>Users</span>
-            </div>
-            <div
-              style={{
-                backgroundColor: 'red',
-                borderRadius: '4px',
-                width: '100px',
-                aspectRatio: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <span>Users</span>
-            </div>
-            <div
-              style={{
-                backgroundColor: 'red',
-                borderRadius: '4px',
-                width: '100px',
-                aspectRatio: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <span>Users</span>
-            </div>
-            <div
-              style={{
-                backgroundColor: 'red',
-                borderRadius: '4px',
-                width: '100px',
-                aspectRatio: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <span>Users</span>
-            </div>
-          </div> */}
           <div
             style={{
               display: 'flex',

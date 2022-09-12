@@ -4,6 +4,7 @@ import DetailTicketPage from '../pages/DetailTicketPage';
 
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
+import UserPage from '../pages/UserPage';
 import PrivateRoute from './PrivateRoute';
 
 const Router = () => {
@@ -16,6 +17,15 @@ const Router = () => {
         element={
           <PrivateRoute>
             <HomePage />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path='users'
+        element={
+          <PrivateRoute>
+            <UserPage />
           </PrivateRoute>
         }
       />
