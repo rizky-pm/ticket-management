@@ -2,6 +2,34 @@ export const paginate = (array, pageSize, pageNumber) => {
   return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
 };
 
+export const filterData = (array, status) => {
+  if (status === '') {
+    return array;
+  }
+
+  return array.filter((item) => item.statusName === status);
+};
+
+export const getTableLength = (array, filterSelect, filterSearch) => {
+  let newArr = array.filter((el) => {
+    return el.type === filterSelect;
+  });
+
+  let newlyArr = [];
+
+  if (newArr.length === 0) {
+    newlyArr = array.filter((el) => {
+      return el?.statusName.toLocaleLowerCase().includes(filterSearch);
+    });
+  } else {
+    newlyArr = newArr.filter((el) => {
+      return el?.statusName.toLocaleLowerCase().includes(filterSearch);
+    });
+  }
+
+  return newlyArr.length;
+};
+
 export const downloadFile = (file) => {
   let ext;
 

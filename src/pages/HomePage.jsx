@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import headerData from '../components/Table/headerData';
 import TableComponent from '../components/Table';
 import PaginationComponent from '../components/PaginationComponent';
-import { paginate } from '../utils';
+import { filterData, getTableLength, paginate } from '../utils';
 import { getTickets } from '../api/tickets';
+import SelectComponent from '../components/SelectComponent';
+import { FILTER_STATUS } from '../constants';
 
 const Container = styled.div`
   display: flex;
@@ -28,8 +30,11 @@ const HomePage = () => {
   const [pageSize, setPageSize] = useState(10);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState([]);
+  const [selectedValue, setSelectedValue] = useState('');
   const user = JSON.parse(localStorage.getItem('user'));
-  const tableData = paginate(data, pageSize, page);
+  const filteredData = filterData(data, selectedValue);
+  const tableData = paginate(filteredData, pageSize, page);
+  const tableLength = getTableLength(filteredData, selectedValue, '');
 
   useEffect(() => {
     getTickets(setIsFetching, setData, user);
@@ -168,12 +173,16 @@ const HomePage = () => {
               <span>Users</span>
             </div>
           </div> */}
+          <SelectComponent
+            setSelectedValue={setSelectedValue}
+            data={FILTER_STATUS}
+          />
           <TableContainer>
             <TableComponent tableData={tableData} headerData={headerData} />
           </TableContainer>
           <PaginationComponent
             page={page}
-            total={data.length}
+            total={tableLength}
             setPage={setPage}
           />
         </>
