@@ -6,7 +6,7 @@ import PaginationComponent from '../components/PaginationComponent';
 import { filterData, getTableLength, paginate } from '../utils';
 import { getTickets } from '../api/tickets';
 import SelectComponent from '../components/SelectComponent';
-import { FILTER_STATUS } from '../constants';
+import { FILTER_STATUS, MENU_DATA } from '../constants';
 import InputSearchComponent from '../components/InputSearchComponent';
 
 const Container = styled.div`
@@ -15,6 +15,32 @@ const Container = styled.div`
   gap: 20px;
   background-color: white;
   padding: 20px;
+`;
+
+const MenuContainer = styled.div`
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+`;
+
+const MenuItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 100px;
+  /* aspect-ratio: 1; */
+  border-radius: 4px;
+  background-color: ${(props) => props.theme.color.dark};
+
+  p {
+    width: 100px;
+    display: block;
+    color: ${(props) => props.theme.color.light};
+    text-align: center;
+    font-size: 14px;
+    /* font-weight: 600; */
+  }
 `;
 
 const TableContainer = styled.div`
@@ -50,6 +76,15 @@ const HomePage = () => {
         <p>Loading...</p>
       ) : (
         <>
+          <MenuContainer>
+            {MENU_DATA.map((menu) => {
+              return (
+                <MenuItem key={menu.value}>
+                  <p>{menu.label}</p>
+                </MenuItem>
+              );
+            })}
+          </MenuContainer>
           {/* <div
             style={{
               display: 'flex',

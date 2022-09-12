@@ -18,3 +18,43 @@ export const FILTER_STATUS = [
     label: 'Re-open',
   },
 ];
+
+export const MENU_DATA = [
+  {
+    value: 'users',
+    label: 'Users',
+  },
+  {
+    value: 'status',
+    label: 'Status',
+  },
+
+  {
+    value: 'roles',
+    label: 'Role',
+  },
+  {
+    value: 'products',
+    label: 'Product',
+  },
+  {
+    value: 'priorities',
+    label: 'Priority',
+  },
+  {
+    value: 'employess',
+    label: 'Employee',
+  },
+  {
+    value: 'customers',
+    label: 'Customer',
+  },
+  {
+    value: 'customer-products',
+    label: 'Customer Product',
+  },
+  {
+    value: 'companies',
+    label: 'Company',
+  },
+];
