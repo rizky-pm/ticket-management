@@ -2,12 +2,31 @@ export const paginate = (array, pageSize, pageNumber) => {
   return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
 };
 
-export const filterData = (array, status) => {
-  if (status === '') {
+export const filterData = (array, status, search) => {
+  if (status === '' && search === '') {
     return array;
   }
 
-  return array.filter((item) => item.statusName === status);
+  const newArray = array.filter((item) => {
+    return (
+      item.title.toLocaleLowerCase().includes(search) ||
+      item.customerName.toLocaleLowerCase().includes(search) ||
+      item.statusName.toLocaleLowerCase().includes(search) ||
+      item.picName.toLocaleLowerCase().includes(search) ||
+      item.priorityName.toLocaleLowerCase().includes(search) ||
+      item.productName.toLocaleLowerCase().includes(search)
+    );
+  });
+
+  const filteredArray = newArray.filter((item) => {
+    if (status === '') {
+      return item;
+    }
+
+    return item.statusName === status;
+  });
+
+  return filteredArray;
 };
 
 export const getTableLength = (array, filterSelect, filterSearch) => {

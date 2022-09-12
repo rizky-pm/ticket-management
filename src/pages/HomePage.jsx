@@ -7,6 +7,7 @@ import { filterData, getTableLength, paginate } from '../utils';
 import { getTickets } from '../api/tickets';
 import SelectComponent from '../components/SelectComponent';
 import { FILTER_STATUS } from '../constants';
+import InputSearchComponent from '../components/InputSearchComponent';
 
 const Container = styled.div`
   display: flex;
@@ -31,8 +32,10 @@ const HomePage = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState([]);
   const [selectedValue, setSelectedValue] = useState('');
+  const [searchInput, setSearchInput] = useState('');
   const user = JSON.parse(localStorage.getItem('user'));
-  const filteredData = filterData(data, selectedValue);
+
+  const filteredData = filterData(data, selectedValue, searchInput);
   const tableData = paginate(filteredData, pageSize, page);
   const tableLength = getTableLength(filteredData, selectedValue, '');
 
@@ -173,10 +176,21 @@ const HomePage = () => {
               <span>Users</span>
             </div>
           </div> */}
-          <SelectComponent
-            setSelectedValue={setSelectedValue}
-            data={FILTER_STATUS}
-          />
+          <div
+            style={{
+              display: 'flex',
+              gap: '10px',
+            }}
+          >
+            <SelectComponent
+              setSelectedValue={setSelectedValue}
+              data={FILTER_STATUS}
+            />
+            <InputSearchComponent
+              searchInput={searchInput}
+              setSearchInput={setSearchInput}
+            />
+          </div>
           <TableContainer>
             <TableComponent tableData={tableData} headerData={headerData} />
           </TableContainer>
