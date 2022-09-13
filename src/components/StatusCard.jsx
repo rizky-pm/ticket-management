@@ -67,19 +67,13 @@ const EditContainer = styled.div`
 const Form = styled.form`
   display: grid;
   grid-template-columns: 0.9fr 0.4fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr;
   gap: 5px 5px;
-  grid-template-areas:
-    'statusName submitButton'
-    'statusCode submitButton';
+  grid-template-areas: 'statusName submitButton';
 `;
 
 const StatusNameInputContainer = styled.div`
   grid-area: statusName;
-`;
-
-const StatusCodeInputContainer = styled.div`
-  grid-area: statusCode;
 `;
 
 const SubmitButton = styled.button`
@@ -98,16 +92,14 @@ const StatusCard = ({ data, reference }) => {
   const [isStatusFocused, setIsStatusFocused] = useState(false);
   const [putPayload, setPutPayload] = useState({
     statusName: '',
-    statusCode: '',
   });
   const userSession = JSON.parse(localStorage.getItem('user'));
-  console.log(data);
 
   const deleteStatusHandler = (id, userSession) => {
     deleteStatus(id, userSession);
   };
 
-  const editStatusHandler = (e) => {
+  const editStatusHandler = () => {
     const payload = {
       id: data.id,
       ...putPayload,
@@ -121,15 +113,6 @@ const StatusCard = ({ data, reference }) => {
       return {
         ...prevState,
         statusName: e.target.value,
-      };
-    });
-  };
-
-  const handleStatusCodeInput = (e) => {
-    setPutPayload((prevState) => {
-      return {
-        ...prevState,
-        statusCode: e.target.value,
       };
     });
   };
@@ -179,17 +162,6 @@ const StatusCard = ({ data, reference }) => {
               value={putPayload.statusName}
             />
           </StatusNameInputContainer>
-          {/* <label htmlFor='statusCode'>Status Code</label> */}
-          <StatusCodeInputContainer>
-            <InputField
-              placeholder={data.statusCode}
-              max={10}
-              onChange={(e) => {
-                handleStatusCodeInput(e);
-              }}
-              value={putPayload.statusCode}
-            />
-          </StatusCodeInputContainer>
           <SubmitButton disabled={putPayload.statusName === ''}>
             Edit
           </SubmitButton>
