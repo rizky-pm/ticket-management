@@ -17,21 +17,43 @@ const text = `
 const PanelComponent = styled(Panel)`
   position: relative;
   width: 100%;
-  background-color: red;
 `;
 
 const UserEmail = styled.p`
-  width: 100%;
+  width: 225px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   font-weight: bold;
 `;
 
+const RoleTag = styled.span`
+  background-color: ${(props) => props.roleColor};
+  padding: 1px 10px;
+  color: white;
+  border-radius: 4px;
+`;
+
 const CollapseComponent = ({ data }) => {
   const [isHovered, setIsHovered] = useState(false);
   const onChange = (key) => {
     console.log(key);
+  };
+
+  const renderRoleTag = (role) => {
+    switch (role) {
+      case 'ESA':
+        return <RoleTag roleColor='red'>{role}</RoleTag>;
+
+      case 'PIC':
+        return <RoleTag roleColor='yellow'>{role}</RoleTag>;
+
+      case 'CUST':
+        return <RoleTag roleColor='green'>{role}</RoleTag>;
+
+      default:
+        break;
+    }
   };
 
   return (
@@ -65,21 +87,55 @@ const CollapseComponent = ({ data }) => {
         key='1'
         className='site-collapse-custom-panel'
       >
-        {/* <ToolContainer isHovered={isHovered}>
-          <DeleteOutlined
-            onClick={() => {
-              console.log('delete');
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            // alignItems: 'flex-start',
+            gap: '10px',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignSelf: 'normal',
+              justifyContent: 'space-between',
             }}
-            style={{ fontSize: '25px', padding: '10px' }}
-          />
-          <EditOutlined
-            onClick={() => {
-              console.log('edit');
+          >
+            <p>{data.userEmail}</p>
+            {renderRoleTag(data.roleCode)}
+          </div>
+          <div
+            style={{
+              alignSelf: 'flex-end',
+              display: 'flex',
+              justifyContent: 'space-between',
+              gap: '10px',
             }}
-            style={{ fontSize: '1.5625rem', padding: '10px' }}
-          />
-        </ToolContainer> */}
-        <p>{text}</p>
+          >
+            <span
+              style={{
+                backgroundColor: 'black',
+                color: 'white',
+                padding: '1px 10px',
+                borderRadius: '4px',
+              }}
+            >
+              Delete
+            </span>
+            <span
+              style={{
+                backgroundColor: 'white',
+                color: 'black',
+                border: '2px solid black',
+                padding: '1px 10px',
+                borderRadius: '4px',
+              }}
+            >
+              Edit
+            </span>
+          </div>
+        </div>
       </PanelComponent>
     </Collapse>
   );
