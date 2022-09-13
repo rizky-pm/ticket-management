@@ -4,6 +4,7 @@ import DetailTicketPage from '../pages/DetailTicketPage';
 
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
+import RolePage from '../pages/RolePage';
 import StatusPage from '../pages/StatusPage';
 import UserPage from '../pages/UserPage';
 import PrivateRoute from './PrivateRoute';
@@ -36,6 +37,15 @@ const Router = () => {
         element={
           <PrivateRoute>
             <StatusPage />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path='roles'
+        element={
+          <PrivateRoute>
+            <RolePage />
           </PrivateRoute>
         }
       />
