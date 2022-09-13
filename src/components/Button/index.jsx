@@ -7,6 +7,7 @@ const Button = styled.button`
   border-radius: 4px;
   outline: none;
   border: none;
+  font-weight: bold;
 `;
 
 export const PrimaryButton = styled(Button)`
@@ -16,7 +17,7 @@ export const PrimaryButton = styled(Button)`
 export const GhostPrimaryButton = styled(PrimaryButton)`
   background-color: ${(props) => props.theme.color.light};
   color: ${(props) => props.theme.color.dark};
-  border: 1px solid ${(props) => props.theme.color.dark};
+  border: 2px solid ${(props) => props.theme.color.dark};
   padding: ${(props) => props.sm};
 `;
 

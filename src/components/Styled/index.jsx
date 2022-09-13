@@ -12,3 +12,8 @@ export const Heading4 = styled.h4`
   font-size: 20px;
   font-weight: 600;
 `;
+
+export const Heading5 = styled.h5`
+  font-size: 18px;
+  font-weight: 600;
+`;
