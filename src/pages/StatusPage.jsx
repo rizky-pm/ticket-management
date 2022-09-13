@@ -5,9 +5,12 @@ import { PlusSquareOutlined } from '@ant-design/icons';
 import { getAllStatus, postNewStatus } from '../api/status';
 import { Container, Heading4, Heading5 } from '../components/Styled';
 import { GhostPrimaryButton } from '../components/Button';
+import StatusCard from '../components/StatusCard';
 
 const StatusContainer = styled.div`
-  padding: 20px 10px;
+  overflow: hidden;
+  position: relative;
+  padding: 20px;
   border-radius: 4px;
   background-color: ${(props) => props.theme.color.gray};
 
@@ -151,11 +154,7 @@ const StatusPage = () => {
             />
           </div>
           {statuses?.map((status) => {
-            return (
-              <StatusContainer key={status.statusCode}>
-                <span>{status.statusName}</span>
-              </StatusContainer>
-            );
+            return <StatusCard data={status} key={status.statusCode} />;
           })}
 
           <EditContainer isEditMode={isEditMode}>
