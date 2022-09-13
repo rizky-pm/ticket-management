@@ -9,7 +9,19 @@ const Button = styled.button`
   border: none;
 `;
 
+export const PrimaryButton = styled(Button)`
+  background-color: ${(props) => props.theme.color.primary};
+  padding: ${(props) => props.sm};
+`;
+export const GhostPrimaryButton = styled(PrimaryButton)`
+  background-color: ${(props) => props.theme.color.light};
+  color: ${(props) => props.theme.color.dark};
+  border: 1px solid ${(props) => props.theme.color.dark};
+  padding: ${(props) => props.sm};
+`;
+
 export const DangerButton = styled(Button)`
+  padding: ${(props) => props.sm};
   background-color: red;
   color: white;
 `;

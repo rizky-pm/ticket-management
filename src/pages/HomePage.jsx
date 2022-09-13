@@ -35,7 +35,6 @@ const MenuItem = styled(Link)`
     color: ${(props) => props.theme.color.light};
     text-align: center;
     font-size: 14px;
-    /* font-weight: 600; */
   }
 `;
 

@@ -5,6 +5,7 @@ import { Collapse } from 'antd';
 import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 
 import '../index.css';
+import { DangerButton, GhostPrimaryButton, PrimaryButton } from './Button';
 
 const { Panel } = Collapse;
 
@@ -30,26 +31,23 @@ const UserEmail = styled.p`
 const RoleTag = styled.span`
   background-color: ${(props) => props.roleColor};
   padding: 1px 10px;
-  color: white;
+  color: ${(props) => props.theme.color.dark};
   border-radius: 4px;
 `;
 
 const CollapseComponent = ({ data }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const onChange = (key) => {
-    console.log(key);
-  };
 
   const renderRoleTag = (role) => {
     switch (role) {
       case 'ESA':
-        return <RoleTag roleColor='red'>{role}</RoleTag>;
+        return <RoleTag roleColor='rgba(235, 64, 52, 0.5)'>{role}</RoleTag>;
 
       case 'PIC':
-        return <RoleTag roleColor='yellow'>{role}</RoleTag>;
+        return <RoleTag roleColor='rgba(234, 250, 7, 0.5)'>{role}</RoleTag>;
 
       case 'CUST':
-        return <RoleTag roleColor='green'>{role}</RoleTag>;
+        return <RoleTag roleColor='rgba(48, 250, 7, 0.5)'>{role}</RoleTag>;
 
       default:
         break;
@@ -108,32 +106,15 @@ const CollapseComponent = ({ data }) => {
           <div
             style={{
               alignSelf: 'flex-end',
-              display: 'flex',
+              display: 'inline-flex',
               justifyContent: 'space-between',
               gap: '10px',
             }}
           >
-            <span
-              style={{
-                backgroundColor: 'black',
-                color: 'white',
-                padding: '1px 10px',
-                borderRadius: '4px',
-              }}
-            >
-              Delete
-            </span>
-            <span
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                border: '2px solid black',
-                padding: '1px 10px',
-                borderRadius: '4px',
-              }}
-            >
+            <PrimaryButton sm='5px 10px'>Delete</PrimaryButton>
+            <GhostPrimaryButton sm='5px 10px' bg='yellow'>
               Edit
-            </span>
+            </GhostPrimaryButton>
           </div>
         </div>
       </PanelComponent>
