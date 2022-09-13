@@ -7,20 +7,6 @@ import { Container, Heading4, Heading5 } from '../components/Styled';
 import { GhostPrimaryButton } from '../components/Button';
 import StatusCard from '../components/StatusCard';
 
-const StatusContainer = styled.div`
-  overflow: hidden;
-  position: relative;
-  padding: 20px;
-  border-radius: 4px;
-  background-color: ${(props) => props.theme.color.gray};
-
-  span {
-    font-size: 32px;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-`;
-
 const EditIcon = styled(PlusSquareOutlined)`
   font-size: 24px;
   color: ${(props) =>
@@ -138,7 +124,7 @@ const StatusPage = () => {
               justifyContent: 'space-between',
             }}
           >
-            <Heading4>Status Page</Heading4>
+            <Heading4>Status List</Heading4>
             <label htmlFor='edit-mode'>
               <EditIcon edit={isEditMode.toString()} />
             </label>
@@ -157,44 +143,47 @@ const StatusPage = () => {
             return <StatusCard data={status} key={status.statusCode} />;
           })}
 
-          <EditContainer isEditMode={isEditMode}>
-            <Heading5>Add new status</Heading5>
-            <Form
-              onSubmit={(e) => {
-                handleSubmit(e, postPayload, userSession);
-              }}
-            >
-              <StatusNameInputContainer>
-                {/* <label htmlFor='statusName'>Status Name</label> */}
-                <InputField
-                  placeholder='Status Name'
-                  max={10}
-                  onChange={(e) => {
-                    handleStatusNameInput(e);
-                  }}
-                  value={postPayload.statusName}
-                />
-              </StatusNameInputContainer>
-              <StatusCodeInputContainer>
-                {/* <label htmlFor='statusCode'>Status Code</label> */}
-                <InputField
-                  placeholder='Status Code'
-                  max={10}
-                  onChange={(e) => {
-                    handleStatusCodeInput(e);
-                  }}
-                  value={postPayload.statusCode}
-                />
-              </StatusCodeInputContainer>
-              <SubmitButton
-                disabled={
-                  postPayload.statusName === '' || postPayload.statusCode === ''
-                }
+          <div>
+            <EditContainer isEditMode={isEditMode}>
+              <Heading5>Add new status</Heading5>
+              <Form
+                onSubmit={(e) => {
+                  handleSubmit(e, postPayload, userSession);
+                }}
               >
-                Add
-              </SubmitButton>
-            </Form>
-          </EditContainer>
+                <StatusNameInputContainer>
+                  {/* <label htmlFor='statusName'>Status Name</label> */}
+                  <InputField
+                    placeholder='Status Name'
+                    max={10}
+                    onChange={(e) => {
+                      handleStatusNameInput(e);
+                    }}
+                    value={postPayload.statusName}
+                  />
+                </StatusNameInputContainer>
+                <StatusCodeInputContainer>
+                  {/* <label htmlFor='statusCode'>Status Code</label> */}
+                  <InputField
+                    placeholder='Status Code'
+                    max={10}
+                    onChange={(e) => {
+                      handleStatusCodeInput(e);
+                    }}
+                    value={postPayload.statusCode}
+                  />
+                </StatusCodeInputContainer>
+                <SubmitButton
+                  disabled={
+                    postPayload.statusName === '' ||
+                    postPayload.statusCode === ''
+                  }
+                >
+                  Add
+                </SubmitButton>
+              </Form>
+            </EditContainer>
+          </div>
         </>
       )}
     </Container>
