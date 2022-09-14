@@ -6,9 +6,6 @@ export const Container = styled.div`
   gap: 20px;
   background-color: white;
   padding: 20px;
-
-  height: ${(props) => (props.disableScroll ? 'auto' : '90vh')};
-  overflow: ${(props) => (props.disableScroll ? 'auto' : 'hidden')};
 `;
 
 export const Header2 = styled.div`

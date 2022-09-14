@@ -24,6 +24,11 @@ const renderCardBackgroundColor = (roleCode) => {
   }
 };
 
+const ContainerWithOverlay = styled(Container)`
+  height: ${(props) => (props.disableScroll ? '90vh' : 'auto')};
+  overflow: ${(props) => (props.disableScroll ? 'hidden' : 'auto')};
+`;
+
 const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -115,7 +120,7 @@ const RolePage = () => {
 
   return (
     <>
-      <Container disableScroll={isOverlayOpen}>
+      <ContainerWithOverlay disableScroll={isOverlayOpen}>
         <Header2>
           <Heading4>Role List</Heading4>
 
@@ -170,7 +175,7 @@ const RolePage = () => {
           />
           <PrimaryButton size='md'>Add</PrimaryButton>
         </OverlayContainer>
-      </Container>
+      </ContainerWithOverlay>
     </>
   );
 };
