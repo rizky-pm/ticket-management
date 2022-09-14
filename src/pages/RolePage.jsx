@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { PlusSquareOutlined, CloseOutlined } from '@ant-design/icons';
 
-import { Container, Header2, Heading4, InputField } from '../components/Styled';
+import {
+  Container,
+  Header2,
+  Heading4,
+  InputField,
+  CardWrapper,
+} from '../components/Styled';
 import {
   addNewRole,
   deleteRoleById,
@@ -18,12 +24,6 @@ import RoleCard from '../components/RoleCard';
 const ContainerWithOverlay = styled(Container)`
   height: ${(props) => (props.disableScroll ? '90vh' : 'auto')};
   overflow: ${(props) => (props.disableScroll ? 'hidden' : 'auto')};
-`;
-
-const CardWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 `;
 
 const CustomInputField = styled(InputField)`

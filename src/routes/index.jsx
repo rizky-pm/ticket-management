@@ -4,6 +4,7 @@ import DetailTicketPage from '../pages/DetailTicketPage';
 
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
+import PriorityPage from '../pages/PriorityPage';
 import RolePage from '../pages/RolePage';
 import StatusPage from '../pages/StatusPage';
 import UserPage from '../pages/UserPage';
@@ -46,6 +47,15 @@ const Router = () => {
         element={
           <PrivateRoute>
             <RolePage />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path='priorities'
+        element={
+          <PrivateRoute>
+            <PriorityPage />
           </PrivateRoute>
         }
       />
