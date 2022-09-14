@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { PlusSquareOutlined } from '@ant-design/icons';
+import { PlusSquareOutlined, CloseOutlined } from '@ant-design/icons';
 
-import { Container, Header2, Heading4 } from '../components/Styled';
+import { Container, Header2, Heading4, InputField } from '../components/Styled';
 import { getAllRoles } from '../api/role';
+import { PrimaryButton } from '../components/Button';
+import SelectComponent from '../components/SelectComponent';
 
 const renderCardBackgroundColor = (roleCode) => {
   //   console.log(roleCode);
@@ -50,6 +52,13 @@ const CardRoleCode = styled.p`
 `;
 
 const OverlayContainer = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
   position: absolute;
   top: 0;
   left: 0;
@@ -62,11 +71,43 @@ const OverlayContainer = styled.div`
   transition: all 0.5s ease-in-out;
 `;
 
+const CustomInputField = styled(InputField)`
+  border: 2px solid ${(props) => props.theme.color.dark};
+  height: 60px;
+  font-size: 20px;
+
+  &:focus {
+    border: 2px solid ${(props) => props.theme.color.accent};
+  }
+`;
+
+const CloseIcon = styled(CloseOutlined)`
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 32px;
+  color: ${(props) => props.theme.color.light};
+`;
+
+const isActiveData = [
+  {
+    value: true,
+    label: 'Active',
+  },
+  {
+    value: false,
+    label: 'Inactive',
+  },
+];
+
 const RolePage = () => {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [roles, setRoles] = useState([]);
+  const [isActive, setIsActive] = useState(true);
   const userSession = JSON.parse(localStorage.getItem('user'));
+
+  console.log(isActive);
 
   useEffect(() => {
     getAllRoles(setIsFetching, setRoles, userSession);
@@ -103,18 +144,31 @@ const RolePage = () => {
           })}
         </CardWrapper>
         <OverlayContainer isOpen={isOverlayOpen}>
-          <p
+          <CloseIcon
             onClick={() => {
               setIsOverlayOpen(!isOverlayOpen);
             }}
-            style={{ padding: '20px' }}
+            style={{ padding: '20px', alignSelf: 'flex-start' }}
           >
             Close
+          </CloseIcon>
+          <p
+            style={{
+              fontSize: '56px',
+              fontWeight: 'bold',
+            }}
+          >
+            Add New Role
           </p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
-          officiis iusto natus id illo quibusdam aspernatur delectus similique
-          voluptate quisquam cumque, ipsum praesentium distinctio voluptas quam
-          aperiam magni, eum unde.
+          <CustomInputField placeholder='Role Name' />
+          <CustomInputField placeholder='Role Code' />
+
+          <SelectComponent
+            size='large'
+            data={isActiveData}
+            setSelectedValue={setIsActive}
+          />
+          <PrimaryButton size='md'>Add</PrimaryButton>
         </OverlayContainer>
       </Container>
     </>

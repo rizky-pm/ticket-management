@@ -22,3 +22,20 @@ export const getAllRoles = async (setIsFetching, setRoles, userSession) => {
     console.log(err);
   }
 };
+
+export const addNewRole = async (payload, userSession) => {
+  try {
+    const res = await axios({
+      method: 'post',
+      url: `${BASE_URL}/roles`,
+      headers: {
+        Authorization: `Bearer ${userSession.data.token}`,
+      },
+      data: payload,
+    });
+
+    console.log(res);
+  } catch (err) {
+    console.log(err);
+  }
+};

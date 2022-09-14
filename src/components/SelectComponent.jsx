@@ -3,7 +3,7 @@ import { Select } from 'antd';
 
 const { Option } = Select;
 
-const SelectComponent = ({ setSelectedValue, data }) => {
+const SelectComponent = ({ setSelectedValue, data, size }) => {
   const handleChange = (value) => {
     setSelectedValue(value);
   };
@@ -12,8 +12,9 @@ const SelectComponent = ({ setSelectedValue, data }) => {
     <Select
       defaultValue={data[0].label}
       style={{
-        width: 120,
+        width: '100%',
       }}
+      size={size}
       onChange={handleChange}
     >
       {data.map((data, index) => {
