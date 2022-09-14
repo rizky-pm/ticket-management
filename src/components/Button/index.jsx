@@ -24,6 +24,7 @@ const Button = styled.button`
   outline: none;
   border: none;
   font-weight: bold;
+  width: 100%;
 
   ${(props) => renderSize(props.size)}
 `;
@@ -31,7 +32,6 @@ const Button = styled.button`
 export const PrimaryButton = styled(Button)`
   /* background-color: ${(props) => props.theme.color.primary}; */
   padding: ${(props) => props.sm};
-  width: 100%;
 `;
 export const GhostPrimaryButton = styled(PrimaryButton)`
   background-color: ${(props) => props.theme.color.light};
@@ -47,7 +47,7 @@ export const DangerButton = styled(Button)`
 `;
 
 export const GhostDangerButton = styled(DangerButton)`
-  background-color: transparent;
-  color: red;
-  border: 2px solid red;
+  background-color: ${(props) => props.theme.color.light};
+  color: ${(props) => props.theme.color.accent};
+  border: 2px solid ${(props) => props.theme.color.accent};
 `;

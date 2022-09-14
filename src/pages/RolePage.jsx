@@ -3,26 +3,17 @@ import styled from 'styled-components';
 import { PlusSquareOutlined, CloseOutlined } from '@ant-design/icons';
 
 import { Container, Header2, Heading4, InputField } from '../components/Styled';
-import { getAllRoles } from '../api/role';
-import { PrimaryButton } from '../components/Button';
+import {
+  addNewRole,
+  deleteRoleById,
+  editRole,
+  getAllRoles,
+  getRoleById,
+} from '../api/role';
+import { GhostDangerButton, PrimaryButton } from '../components/Button';
 import SelectComponent from '../components/SelectComponent';
-
-const renderCardBackgroundColor = (roleCode) => {
-  //   console.log(roleCode);
-  switch (roleCode) {
-    case 'ESA':
-      return 'background-color: #FF3C38';
-
-    case 'PIC':
-      return 'background-color: #FFD60A';
-
-    case 'CUST':
-      return 'background-color: #00C2FF';
-
-    default:
-      break;
-  }
-};
+import OverlayComponent from '../components/OverlayComponent';
+import RoleCard from '../components/RoleCard';
 
 const ContainerWithOverlay = styled(Container)`
   height: ${(props) => (props.disableScroll ? '90vh' : 'auto')};
@@ -33,47 +24,6 @@ const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-`;
-
-const CardContainer = styled.div`
-  border-radius: 4px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  ${(props) => renderCardBackgroundColor(props.roleCode)};
-  gap: 10px;
-  overflow: hidden;
-  position: relative;
-`;
-
-const CardRoleName = styled.p`
-  font-size: 20px;
-  font-weight: 600;
-`;
-
-const CardRoleCode = styled.p`
-  font-size: 20px;
-  font-weight: 500;
-`;
-
-const OverlayContainer = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  color: ${(props) => props.theme.color.light};
-  background-color: ${(props) => props.theme.color.dark};
-  transform: ${(props) =>
-    props.isOpen ? 'translateX(0)' : 'translateX(-100%)'};
-  transition: all 0.5s ease-in-out;
 `;
 
 const CustomInputField = styled(InputField)`
@@ -106,77 +56,274 @@ const isActiveData = [
 ];
 
 const RolePage = () => {
-  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [isAddNewRoleOverlayOpen, setIsAddNewRoleOverlayOpen] = useState(false);
+  const [isEditRoleOverlayOpen, setIsEditRoleOverlayOpen] = useState(false);
+  const [isDeleteRoleOverlayOpen, setIsDeleteRoleOverlayOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [roles, setRoles] = useState([]);
+  const [role, setRole] = useState({});
   const [isActive, setIsActive] = useState(true);
+  const [selectedRole, setSelectedRole] = useState(null);
+  const [addNewRolePayload, setAddNewRolePayload] = useState({
+    roleName: '',
+    roleCode: '',
+  });
+  const [editRolePayload, setEditRolePayload] = useState({
+    roleName: '',
+  });
   const userSession = JSON.parse(localStorage.getItem('user'));
 
-  console.log(isActive);
+  const getRole = async () => {
+    const res = await getRoleById(selectedRole.id, userSession);
+    setRole(res.data.data);
+  };
+
+  const roleNameInputHandler = (e) => {
+    setAddNewRolePayload({
+      ...addNewRolePayload,
+      roleName: e.target.value,
+    });
+  };
+
+  const roleCodeInputHandler = (e) => {
+    setAddNewRolePayload({
+      ...addNewRolePayload,
+      roleCode: e.target.value,
+    });
+  };
+
+  const AddNewRoleButtonHandler = async () => {
+    const payload = {
+      ...addNewRolePayload,
+      isActive,
+    };
+
+    const res = await addNewRole(payload, userSession);
+
+    if (res.status === 201) {
+      setIsAddNewRoleOverlayOpen(false);
+      getAllRoles(setIsFetching, setRoles, userSession);
+      setAddNewRolePayload({
+        roleName: '',
+        roleCode: '',
+      });
+    }
+  };
+
+  const EditRoleButtonHandler = async () => {
+    const payload = {
+      ...role,
+      roleName: editRolePayload.roleName,
+    };
+
+    const res = await editRole(payload, userSession);
+
+    if (res.status === 200) {
+      setIsEditRoleOverlayOpen(false);
+      setSelectedRole(null);
+      getAllRoles(setIsFetching, setRoles, userSession);
+    }
+  };
+
+  const deleteRoleButtonHandler = async () => {
+    const res = await deleteRoleById(selectedRole.id, userSession);
+
+    if (res.status === 200) {
+      setIsDeleteRoleOverlayOpen(false);
+      setSelectedRole(null);
+      getAllRoles(setIsFetching, setRoles, userSession);
+    }
+  };
 
   useEffect(() => {
     getAllRoles(setIsFetching, setRoles, userSession);
   }, []);
 
+  useEffect(() => {
+    if (selectedRole) {
+      getRole();
+    }
+  }, [selectedRole]);
+
   return (
-    <>
-      <ContainerWithOverlay disableScroll={isOverlayOpen}>
-        <Header2>
-          <Heading4>Role List</Heading4>
+    <ContainerWithOverlay
+      disableScroll={
+        isAddNewRoleOverlayOpen ||
+        isEditRoleOverlayOpen ||
+        isDeleteRoleOverlayOpen
+      }
+    >
+      {isFetching ? (
+        <Heading4>Loading ...</Heading4>
+      ) : (
+        <>
+          <Header2>
+            <Heading4>Role List</Heading4>
 
-          <label htmlFor='edit-mode'>
-            <PlusSquareOutlined style={{ fontSize: '24px' }} />
-          </label>
-          <input
-            style={{
-              display: 'none',
-            }}
-            type='checkbox'
-            name='edit-mode'
-            id='edit-mode'
-            value={isOverlayOpen}
-            onChange={() => setIsOverlayOpen(!isOverlayOpen)}
-          />
-        </Header2>
-        <CardWrapper>
-          {roles?.map((role) => {
-            return (
-              <CardContainer key={role.id} roleCode={role.roleCode}>
-                <CardRoleName>{role.roleName}</CardRoleName>
-                <CardRoleCode>{role.roleCode}</CardRoleCode>
-              </CardContainer>
-            );
-          })}
-        </CardWrapper>
-        <OverlayContainer isOpen={isOverlayOpen}>
-          <CloseIcon
-            onClick={() => {
-              setIsOverlayOpen(!isOverlayOpen);
-            }}
-            style={{ padding: '20px', alignSelf: 'flex-start' }}
-          >
-            Close
-          </CloseIcon>
-          <p
-            style={{
-              fontSize: '56px',
-              fontWeight: 'bold',
-            }}
-          >
-            Add New Role
-          </p>
-          <CustomInputField placeholder='Role Name' />
-          <CustomInputField placeholder='Role Code' />
+            <label htmlFor='edit-mode'>
+              <PlusSquareOutlined style={{ fontSize: '24px' }} />
+            </label>
+            <input
+              style={{
+                display: 'none',
+              }}
+              type='checkbox'
+              name='edit-mode'
+              id='edit-mode'
+              value={isAddNewRoleOverlayOpen}
+              onChange={() =>
+                setIsAddNewRoleOverlayOpen(!isAddNewRoleOverlayOpen)
+              }
+            />
+          </Header2>
+          <CardWrapper>
+            {roles?.map((role) => {
+              return (
+                <RoleCard
+                  setSelectedRole={setSelectedRole}
+                  isEditRoleOverlayOpen={isEditRoleOverlayOpen}
+                  setIsEditRoleOverlayOpen={setIsEditRoleOverlayOpen}
+                  setIsDeleteRoleOverlayOpen={setIsDeleteRoleOverlayOpen}
+                  isDeleteRoleOverlayOpen={isDeleteRoleOverlayOpen}
+                  data={role}
+                  key={role.id}
+                />
+              );
+            })}
+          </CardWrapper>
 
-          <SelectComponent
-            size='large'
-            data={isActiveData}
-            setSelectedValue={setIsActive}
-          />
-          <PrimaryButton size='md'>Add</PrimaryButton>
-        </OverlayContainer>
-      </ContainerWithOverlay>
-    </>
+          {/* Start of overlay for add new role */}
+          <OverlayComponent isOpen={isAddNewRoleOverlayOpen}>
+            <CloseIcon
+              onClick={() => {
+                setIsAddNewRoleOverlayOpen(!isAddNewRoleOverlayOpen);
+              }}
+              style={{ padding: '20px', alignSelf: 'flex-start' }}
+            >
+              Close
+            </CloseIcon>
+            <p
+              style={{
+                fontSize: '56px',
+                fontWeight: 'bold',
+              }}
+            >
+              Add New Role
+            </p>
+            <CustomInputField
+              onChange={(e) => {
+                roleNameInputHandler(e);
+              }}
+              placeholder='Role Name'
+              value={addNewRolePayload.roleName}
+            />
+            <CustomInputField
+              onChange={(e) => {
+                roleCodeInputHandler(e);
+              }}
+              placeholder='Role Code'
+              value={addNewRolePayload.roleCode}
+              max={4}
+            />
+
+            <SelectComponent
+              size='large'
+              data={isActiveData}
+              setSelectedValue={setIsActive}
+            />
+            <PrimaryButton
+              onClick={AddNewRoleButtonHandler}
+              size='md'
+              disabled={
+                addNewRolePayload.roleName === '' ||
+                addNewRolePayload.roleCode === ''
+              }
+            >
+              Add
+            </PrimaryButton>
+          </OverlayComponent>
+          {/* End of overlay for add new role */}
+
+          {/* Start of overlay for edit role */}
+          <OverlayComponent isOpen={isEditRoleOverlayOpen}>
+            <CloseIcon
+              onClick={() => {
+                setIsEditRoleOverlayOpen(!isEditRoleOverlayOpen);
+              }}
+              style={{ padding: '20px', alignSelf: 'flex-start' }}
+            />
+            <p
+              style={{
+                fontSize: '56px',
+                fontWeight: 'bold',
+                overflowWrap: 'break-word',
+                wordWrap: 'break-word',
+                hyphens: 'auto',
+                whiteSpace: 'normal',
+                width: '100%',
+              }}
+            >
+              Edit {selectedRole?.roleName}
+            </p>
+            <CustomInputField
+              onChange={(e) => {
+                setEditRolePayload((prevState) => {
+                  return {
+                    ...prevState,
+                    roleName: e.target.value,
+                  };
+                });
+              }}
+              placeholder='New Role Name'
+            />
+            <PrimaryButton
+              onClick={EditRoleButtonHandler}
+              size='md'
+              disabled={editRolePayload.roleName === ''}
+            >
+              Edit
+            </PrimaryButton>
+          </OverlayComponent>
+          {/* End of overlay for edit role */}
+
+          {/* Start of overlay for delete role */}
+          <OverlayComponent isOpen={isDeleteRoleOverlayOpen}>
+            <CloseIcon
+              onClick={() => {
+                setIsDeleteRoleOverlayOpen(!isDeleteRoleOverlayOpen);
+              }}
+              style={{ padding: '20px', alignSelf: 'flex-start' }}
+            />
+            <p
+              style={{
+                fontSize: '56px',
+                fontWeight: 'bold',
+                overflowWrap: 'break-word',
+                wordWrap: 'break-word',
+                hyphens: 'auto',
+                whiteSpace: 'normal',
+                width: '100%',
+              }}
+            >
+              Are You Sure To Delete {selectedRole?.roleName}
+            </p>
+            <PrimaryButton onClick={deleteRoleButtonHandler} size='md'>
+              Yes, Delete
+            </PrimaryButton>
+            <GhostDangerButton
+              onClick={() => {
+                setIsDeleteRoleOverlayOpen(!isDeleteRoleOverlayOpen);
+                setSelectedRole(null);
+              }}
+              size='md'
+            >
+              No, Cancel
+            </GhostDangerButton>
+          </OverlayComponent>
+          {/* End of overlay for delete role */}
+        </>
+      )}
+    </ContainerWithOverlay>
   );
 };
 
