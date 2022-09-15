@@ -19,7 +19,6 @@ const PrivateRoute = ({ children, role }) => {
   }, []);
 
   if (responseStatus !== 200 && !user) {
-    console.log('bois');
     return <Navigate to='/login' replace />;
   }
 
