@@ -3,7 +3,7 @@ import { Select } from 'antd';
 
 const { Option } = Select;
 
-const SelectComponent = ({ setSelectedValue, data, size }) => {
+const SelectComponent = ({ setSelectedValue, data, size, selectedValue }) => {
   const handleChange = (value) => {
     setSelectedValue(value);
   };
@@ -16,6 +16,7 @@ const SelectComponent = ({ setSelectedValue, data, size }) => {
       }}
       size={size}
       onChange={handleChange}
+      value={selectedValue}
     >
       {data.map((data, index) => {
         return (

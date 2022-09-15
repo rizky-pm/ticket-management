@@ -58,3 +58,14 @@ export const MENU_DATA = [
     label: 'Company',
   },
 ];
+
+export const IS_ACTIVE_DATA = [
+  {
+    value: true,
+    label: 'Active',
+  },
+  {
+    value: false,
+    label: 'Inactive',
+  },
+];

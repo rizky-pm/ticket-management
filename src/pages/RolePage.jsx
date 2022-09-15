@@ -20,6 +20,7 @@ import { GhostDangerButton, PrimaryButton } from '../components/Button';
 import SelectComponent from '../components/SelectComponent';
 import OverlayComponent from '../components/OverlayComponent';
 import RoleCard from '../components/RoleCard';
+import { IS_ACTIVE_DATA } from '../constants';
 
 const ContainerWithOverlay = styled(Container)`
   height: ${(props) => (props.disableScroll ? '90vh' : 'auto')};
@@ -43,17 +44,6 @@ const CloseIcon = styled(CloseOutlined)`
   font-size: 32px;
   color: ${(props) => props.theme.color.light};
 `;
-
-const isActiveData = [
-  {
-    value: true,
-    label: 'Active',
-  },
-  {
-    value: false,
-    label: 'Inactive',
-  },
-];
 
 const RolePage = () => {
   const [isAddNewRoleOverlayOpen, setIsAddNewRoleOverlayOpen] = useState(false);
@@ -228,7 +218,7 @@ const RolePage = () => {
 
             <SelectComponent
               size='large'
-              data={isActiveData}
+              data={IS_ACTIVE_DATA}
               setSelectedValue={setIsActive}
             />
             <PrimaryButton
