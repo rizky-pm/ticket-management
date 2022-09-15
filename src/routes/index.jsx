@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import DetailTicketPage from '../pages/DetailTicketPage';
+import EmployeePage from '../pages/EmployeePage';
 
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
@@ -66,6 +67,15 @@ const Router = () => {
         element={
           <PrivateRoute>
             <PriorityPage />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path='employees'
+        element={
+          <PrivateRoute>
+            <EmployeePage />
           </PrivateRoute>
         }
       />

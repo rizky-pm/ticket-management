@@ -66,3 +66,17 @@ export const downloadFile = (file) => {
   downloadLink.download = fileName;
   downloadLink.click();
 };
+
+export const renderFile = (file) => {
+  let ext;
+
+  if (['bmp', 'jpg', 'jpeg', 'gif', 'png'].includes(file.fileExt)) {
+    ext = 'image/' + file.fileExt;
+  } else {
+    ext = 'application/' + file.fileExt;
+  }
+
+  const linkSource = `data:${ext};base64,${file.fileName}`;
+
+  return linkSource;
+};

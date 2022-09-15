@@ -42,7 +42,7 @@ export const MENU_DATA = [
     label: 'Priority',
   },
   {
-    value: 'employess',
+    value: 'employees',
     label: 'Employee',
   },
   {

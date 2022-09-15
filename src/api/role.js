@@ -2,8 +2,7 @@ import axios from 'axios';
 
 import { BASE_URL } from '../constants';
 
-export const getAllRoles = async (setIsFetching, setRoles, userSession) => {
-  setIsFetching(true);
+export const getAllRoles = async (userSession) => {
   try {
     const res = await axios({
       method: 'get',
@@ -13,13 +12,9 @@ export const getAllRoles = async (setIsFetching, setRoles, userSession) => {
       },
     });
 
-    setIsFetching(false);
-
-    if (res.status === 200) {
-      setRoles(res.data.datas);
-    }
+    return res;
   } catch (err) {
-    console.log(err);
+    return err;
   }
 };
 
