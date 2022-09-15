@@ -8,6 +8,7 @@ const ProductCard = ({
   data,
   setIsEditProductOverlayOpen,
   setSelectedData,
+  setIsDeleteProductOverlayOpen,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   return (
@@ -24,8 +25,8 @@ const ProductCard = ({
       <ToolContainer isHovered={isHovered}>
         <DeleteOutlined
           onClick={() => {
-            // setIsModalDeletePriorityOpen((prevState) => !prevState);
-            // setSelectedPriority(data);
+            setIsDeleteProductOverlayOpen((prevState) => !prevState);
+            setSelectedData(data);
           }}
           style={{ fontSize: '25px', padding: '10px' }}
         />

@@ -67,3 +67,19 @@ export const editProduct = async (payload, userSession) => {
     return error;
   }
 };
+
+export const deleteProduct = async (id, userSession) => {
+  try {
+    const res = await axios({
+      method: 'DELETE',
+      url: `${BASE_URL}/products/${id}`,
+      headers: {
+        Authorization: `Bearer ${userSession.data.token}`,
+      },
+    });
+
+    return res;
+  } catch (error) {
+    return error;
+  }
+};

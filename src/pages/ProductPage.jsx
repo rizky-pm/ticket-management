@@ -8,6 +8,7 @@ import {
   Heading4,
   InputField,
   CardWrapper,
+  HighlightedText,
 } from '../components/Styled';
 import { PrimaryButton } from '../components/Button';
 import ProductCard from '../components/ProductCard';
@@ -15,9 +16,9 @@ import SelectComponent from '../components/SelectComponent';
 import OverlayComponent from '../components/OverlayComponent';
 import {
   addNewProduct,
+  deleteProduct,
   editProduct,
   getAllProducts,
-  getProductById,
 } from '../api';
 import { IS_ACTIVE_DATA } from '../constants';
 
@@ -31,6 +32,8 @@ const ProductPage = () => {
     useState(false);
   const [isEditProductOverlayOpen, setIsEditProductOverlayOpen] =
     useState(false);
+  const [isDeleteProductOverlayOpen, setIsDeleteProductOverlayOpen] =
+    useState(false);
 
   const userSession = JSON.parse(localStorage.getItem('user'));
 
@@ -38,7 +41,6 @@ const ProductPage = () => {
     setIsFetching(true);
     const response = await getAllProducts(userSession);
     setIsFetching(false);
-    console.log(response);
 
     if (response.status === 200) {
       setData(response.data.datas);
@@ -110,6 +112,16 @@ const ProductPage = () => {
     }
   };
 
+  const deleteProductHandler = async () => {
+    const res = await deleteProduct(selectedData.id, userSession);
+
+    if (res.status === 200) {
+      setIsDeleteProductOverlayOpen(false);
+      setInputState({});
+      fetchAllProducts();
+    }
+  };
+
   useEffect(() => {
     fetchAllProducts();
   }, []);
@@ -134,6 +146,7 @@ const ProductPage = () => {
                 <ProductCard
                   setSelectedData={setSelectedData}
                   setIsEditProductOverlayOpen={setIsEditProductOverlayOpen}
+                  setIsDeleteProductOverlayOpen={setIsDeleteProductOverlayOpen}
                   key={item.id}
                   data={item}
                 />
@@ -232,12 +245,45 @@ const ProductPage = () => {
             <PrimaryButton
               onClick={editProductHandler}
               size='md'
-              //   disabled={!inputState.productName}
+              disabled={!inputState.productName}
             >
               Edit
             </PrimaryButton>
           </OverlayComponent>
           {/* End of edit product overlay */}
+
+          {/* Start of delete product overlay */}
+          <OverlayComponent isOpen={isDeleteProductOverlayOpen}>
+            <CloseIcon
+              onClick={() => {
+                setIsDeleteProductOverlayOpen((prevState) => !prevState);
+              }}
+              style={{ padding: '20px', alignSelf: 'flex-start' }}
+            >
+              Close
+            </CloseIcon>
+            <p
+              style={{
+                fontSize: '50px',
+                fontWeight: 'bold',
+                overflowWrap: 'break-word',
+                wordWrap: 'break-word',
+                hyphens: 'auto',
+                whiteSpace: 'normal',
+                width: '100%',
+              }}
+            >
+              Are you sure to delete{' '}
+              <HighlightedText fontSize='50px' fontWeight='bold'>
+                {selectedData?.productName}
+              </HighlightedText>{' '}
+              ?
+            </p>
+            <PrimaryButton onClick={deleteProductHandler} size='md'>
+              Yes, Delete
+            </PrimaryButton>
+          </OverlayComponent>
+          {/* End of delete product overlay */}
         </>
       )}
     </ContainerWithOverlay>

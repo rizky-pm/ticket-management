@@ -35,6 +35,12 @@ export const Heading5 = styled.h5`
   font-weight: 600;
 `;
 
+export const HighlightedText = styled.span`
+  font-size: ${(props) => props.fontSize};
+  font-weight: ${(props) => props.fontWeight};
+  color: ${(props) => props.theme.color.accent};
+`;
+
 export const InputField = styled.input.attrs((props) => ({
   type: 'text',
   placeholder: props.placeholder,
