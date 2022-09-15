@@ -2,8 +2,7 @@ import axios from 'axios';
 
 import { BASE_URL } from '../constants';
 
-export const getTickets = async (setIsFetching, setData, user) => {
-  setIsFetching(true);
+export const getTickets = async (user) => {
   try {
     const response = await axios({
       method: 'get',
@@ -13,14 +12,9 @@ export const getTickets = async (setIsFetching, setData, user) => {
       },
     });
 
-    setIsFetching(false);
-
-    if (response.status === 200) {
-      setData(response.data.datas);
-    }
+    return response;
   } catch (error) {
-    setIsFetching(false);
-    console.error(error);
+    return error;
   }
 };
 

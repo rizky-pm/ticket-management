@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -79,6 +79,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState('superadmin');
   const [password, setPassword] = useState('superadmin');
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const handleLogin = async () => {
     setIsLoading(true);
@@ -107,6 +108,12 @@ const LoginPage = () => {
   const handlePasswordInput = (event) => {
     setPassword(event.target.value);
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, []);
 
   return (
     <Container>

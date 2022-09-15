@@ -47,6 +47,7 @@ const HomePage = () => {
   const [pageSize, setPageSize] = useState(10);
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
   const [selectedValue, setSelectedValue] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const user = JSON.parse(localStorage.getItem('user'));
@@ -55,8 +56,20 @@ const HomePage = () => {
   const tableData = paginate(filteredData, pageSize, page);
   const tableLength = getTableLength(filteredData, selectedValue, '');
 
+  const fetchTickets = async () => {
+    setIsFetching(true);
+    const response = await getTickets(user);
+
+    setIsFetching(false);
+    if (response.status === 200) {
+      setData(response.data.datas);
+    } else {
+      setError(response.data.message);
+    }
+  };
+
   useEffect(() => {
-    getTickets(setIsFetching, setData, user);
+    fetchTickets();
   }, []);
 
   return (
