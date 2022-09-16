@@ -7,6 +7,8 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         background-color: ${(props) => props.theme.color.light} ;
+        overflow: ${(props) =>
+          props.style.bodyOverflowHidden ? 'hidden' : 'auto'};
     }
 
     html, body, div, span, applet, object, iframe,

@@ -9,7 +9,7 @@ const OverlayContainer = styled.div`
   align-items: center;
   gap: 20px;
 
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;

@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { DeleteOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
 
 import { ToolContainer } from './Styled';
-import { renderFile } from '../utils';
+import { toggleOverflow } from '../rtk/features/styleSlice';
 
-const EmployeeCard = ({ data }) => {
+const EmployeeCard = ({
+  data,
+  setIsEditEmployeeOverlayOpen,
+  setSelectedData,
+  setIsDeleteEmployeeOverlayOpen,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
+  const dispatch = useDispatch();
 
-  const base64String = renderFile(data);
+  // console.log(data.fileName);
 
   return (
     <EmployeeContainer
@@ -24,23 +31,24 @@ const EmployeeCard = ({ data }) => {
           <UserOutlined style={{ fontSize: '40px' }} />
         </NoEmployeeAvatar>
       ) : (
-        <EmployeeAvatar src={base64String} alt='avatar' />
+        <EmployeeAvatar src={data?.fileName} alt='avatar' />
       )}
       <EmployeeName>{data.fullName}</EmployeeName>
       <EmployeeEmail>{data.email} email@example.com</EmployeeEmail>
-      {/* <EmployeeCode>{data.productCode}</EmployeeCode> */}
       <ToolContainer isHovered={isHovered}>
         <DeleteOutlined
           onClick={() => {
-            // setIsDeleteProductOverlayOpen((prevState) => !prevState);
-            // setSelectedData(data);
+            setIsDeleteEmployeeOverlayOpen((prevState) => !prevState);
+            setSelectedData(data);
+            dispatch(toggleOverflow());
           }}
           style={{ fontSize: '25px', padding: '10px' }}
         />
         <EditOutlined
           onClick={() => {
-            // setIsEditProductOverlayOpen((prevState) => !prevState);
-            // setSelectedData(data);
+            setIsEditEmployeeOverlayOpen((prevState) => !prevState);
+            setSelectedData(data);
+            dispatch(toggleOverflow());
           }}
           style={{ fontSize: '1.5625rem', padding: '10px' }}
         />
@@ -80,7 +88,7 @@ const NoEmployeeAvatar = styled.div`
   font-size: 40px;
 `;
 
-const EmployeeAvatar = styled.img`
+const EmployeeAvatar = styled.img.attrs({ loading: 'lazy' })`
   grid-area: avatar;
   width: 100%;
   object-fit: fill;
