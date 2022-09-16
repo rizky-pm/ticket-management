@@ -10,25 +10,26 @@ const SelectRoleComponent = ({
   selectedValue,
 }) => {
   const handleChange = (value) => {
-    setSelectedValue(value);
+    const selectedRole = data.find((role) => role.roleName === value);
+    setSelectedValue(selectedRole.id);
   };
-
-  console.log(data[0]);
 
   return (
     <Select
-      defaultValue={`${data[0]?.roleName} - ${data[0]?.roleCode}`}
+      defaultValue={`Select Role`}
       style={{
         width: '100%',
       }}
       size={size}
-      onChange={handleChange}
+      onChange={(value) => {
+        handleChange(value);
+      }}
       value={selectedValue}
     >
       {data.map((data, index) => {
         return (
-          <Option value={data.id} key={index}>
-            {data.roleName} - {data.roleCode}
+          <Option value={data.roleName} key={index}>
+            {data.roleName}
           </Option>
         );
       })}

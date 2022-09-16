@@ -49,6 +49,17 @@ export const getTableLength = (array, filterSelect, filterSearch) => {
   return newlyArr.length;
 };
 
+export const fileToBase64 = (file, cb) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => {
+    cb(null, reader.result);
+  };
+  reader.onerror = (error) => {
+    cb(error, null);
+  };
+};
+
 export const downloadFile = (file) => {
   let ext;
 

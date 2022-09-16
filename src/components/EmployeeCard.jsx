@@ -19,7 +19,7 @@ const EmployeeCard = ({ data }) => {
         setIsHovered(false);
       }}
     >
-      {data.fileName === 'Foto' ? (
+      {data.fileName === 'Foto' || !data.fileName ? (
         <NoEmployeeAvatar>
           <UserOutlined style={{ fontSize: '40px' }} />
         </NoEmployeeAvatar>

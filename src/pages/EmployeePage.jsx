@@ -30,12 +30,19 @@ const EmployeePage = () => {
   const [data, setData] = useState([]);
   const [roles, setRoles] = useState([]);
   const [error, setError] = useState(null);
-  const [inputState, setInputState] = useState({});
+  const [payload, setPayload] = useState({
+    fullName: '',
+    user: {
+      userEmail: '',
+      roleId: null,
+    },
+    isActive: null,
+    fileName: null,
+    fileExt: null,
+  });
   const [isAddNewEmployeeOverlayOpen, setIsAddNewEmployeeOverlayOpen] =
     useState(false);
   const userSession = JSON.parse(localStorage.getItem('user'));
-
-  console.log(roles);
 
   const fetchAllEmployees = async () => {
     setIsFetching(true);
@@ -58,19 +65,19 @@ const EmployeePage = () => {
   };
 
   const postNewEmployee = async () => {
-    console.log(inputState);
-    // const response = await addNewEmployee(payload, userSession);
-    // if (response.status === 200) {
-    //   fetchAllEmployees();
-    //   setIsAddNewEmployeeOverlayOpen(false);
-    // } else {
-    //   setError(response.response.data.message);
-    // }
+    console.log(payload);
+    const response = await addNewEmployee(payload, userSession);
+    if (response.status === 201) {
+      fetchAllEmployees();
+      setIsAddNewEmployeeOverlayOpen(false);
+    } else {
+      setError(response);
+    }
   };
 
   // * Start Of Input Handler
   const fullNameInputHandler = (e) => {
-    setInputState((prevState) => {
+    setPayload((prevState) => {
       return {
         ...prevState,
         fullName: e.target.value,
@@ -79,40 +86,41 @@ const EmployeePage = () => {
   };
 
   const emailInputHandler = (e) => {
-    setInputState((prevState) => {
+    setPayload((prevState) => {
       return {
         ...prevState,
         user: {
+          ...prevState.user,
           userEmail: e.target.value,
         },
       };
     });
   };
 
-  const roleInputHandler = (e) => {
-    setInputState((prevState) => {
+  const roleInputHandler = (value) => {
+    setPayload((prevState) => {
       return {
         ...prevState,
         user: {
           ...prevState.user,
-          roleId: e.target.value,
+          roleId: value,
         },
       };
     });
   };
 
-  const isActiveInputHandler = (e) => {
-    setInputState((prevState) => {
+  const isActiveInputHandler = (value) => {
+    setPayload((prevState) => {
       return {
         ...prevState,
-        isActive: e.target.value,
+        isActive: value,
       };
     });
   };
 
   const fileInputHandler = (e) => {
     console.log(e.target.files[0]);
-    // setInputState((prevState) => {
+    // setPayload((prevState) => {
     //   return {
     //     ...prevState,
     //     fileName: e.target.files[0],
@@ -120,6 +128,8 @@ const EmployeePage = () => {
     // });
   };
   // * End Of Input Handler
+
+  console.log(data);
 
   useEffect(() => {
     fetchAllEmployees();
@@ -170,34 +180,44 @@ const EmployeePage = () => {
               }}
               placeholder='Full Name'
               max={255}
-              //   value={inputState.productName || ''}
             />
             <CustomInputField
               onChange={(e) => {
                 emailInputHandler(e);
               }}
               placeholder='Email'
-              //   value={inputState.productCode || ''}
               max={255}
             />
 
             <SelectComponent
               size='large'
               data={IS_ACTIVE_DATA}
-              //   setSelectedValue={(value) => {
-              //     productActiveSelectHandler(value);
-              //   }}
-              //   selectedValue={inputState.isActive ?? true}
+              setSelectedValue={(value) => {
+                isActiveInputHandler(value);
+              }}
+              defaultValue='Select Activity'
+              selectedValue={payload.isActive ?? true}
             />
 
-            <SelectRoleComponent size='large' data={roles} />
+            <SelectRoleComponent
+              size='large'
+              data={roles}
+              setSelectedValue={(value) => {
+                roleInputHandler(value);
+              }}
+            />
 
-            <FileUploader />
+            <FileUploader payload={payload} setPayload={setPayload} />
 
             <PrimaryButton
               onClick={postNewEmployee}
               size='md'
-              //   disabled={!inputState.productName || !inputState.productCode}
+              disabled={
+                !payload.fullName ||
+                !payload.user.userEmail ||
+                !payload.user.roleId ||
+                !payload.isActive
+              }
             >
               Add
             </PrimaryButton>
