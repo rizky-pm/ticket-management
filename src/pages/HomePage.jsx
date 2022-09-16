@@ -64,7 +64,7 @@ const HomePage = () => {
     if (response.status === 200) {
       setData(response.data.datas);
     } else {
-      setError(response.data.message);
+      setError(response);
     }
   };
 
